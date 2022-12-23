@@ -1,24 +1,28 @@
+# imports from external libraries
 import pygame
-import json
 import sys
 
+# imports from files
 from pyfiles.game import Game
 
-def check_event(event):
-    pass
 
-with open("json_files/settings.json", "r") as file:
-    data = json.load(file)
+def check_event(event):
+    if event.type == pygame.QUIT:
+        pygame.quit()
+        sys.exit()
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_ESCAPE:
+            pygame.quit()
+            sys.exit()
+
 
 pygame.init()
-screen_width, screen_height = data["window_size"]
-screen = pygame.display.set_mode((screen_width,screen_height))
-clock = pygame.time.Clock()
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 game = Game()
+running = True
 
-while True:
+while running:
     for e in pygame.event.get():
         check_event(e)
     screen.fill('grey')
     pygame.display.update()
-    clock.tick(60)

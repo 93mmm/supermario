@@ -1,8 +1,8 @@
 {
-    "window_size": [
-        1960,
-        1080
-    ],
+    "player_charecteristics": {
+        "speed": 10,
+        "sprites": []
+    },
     "enemies": {
         "mushroom": {
             "sprites": [],
@@ -13,6 +13,26 @@
             "speed": 5
         }
     },
-    "blocks": [],
-    "other_objects": []
-}
+    "level_objects": { // ассеты блоков
+        "blocks": [],
+        "other_objects": []
+    },
+    "levels": [
+        0,
+        1
+    ], // возможно понадобится
+    "spawnpoints": { // 
+        "level_0": {
+            "player": [], // spawnpoint игрока
+            "enemies": [
+                []
+            ] // матрица возможных появлений враждебных сущностей
+        },
+        "level_1": {
+            "player": [],
+            "enemies": [
+                []
+            ] // матрица возможных появлений враждебных сущностей
+        }
+    }
+} // удалить этот комментарий после прочтения
