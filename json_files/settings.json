@@ -1,0 +1,18 @@
+{
+    "window_size": [
+        1960,
+        1080
+    ],
+    "enemies": {
+        "mushroom": {
+            "sprites": [],
+            "speed": 5
+        },
+        "tortoise": {
+            "sprites": [],
+            "speed": 5
+        }
+    },
+    "blocks": [],
+    "other_objects": []
+}
