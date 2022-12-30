@@ -5,7 +5,6 @@ with open("json_files/settings.json", "r") as file:
     data = json.load(file)
 
 
-
 class Player:
     def __init__(self, level):
         self.level = level
