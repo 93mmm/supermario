@@ -5,6 +5,7 @@ import sys
 # imports from files
 from pyfiles.game import Game
 from pyfiles.button import Button
+from pyfiles.level import Level, level_map
 
 
 def check_event(event):
@@ -21,22 +22,18 @@ pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 #game = Game() сделал специально, чтобы пока ошибку не ловил
 running = True
-BG = pygame.image.load("presets/BG.png")
+BG = pygame.image.load("presets/main_menu/BG.png")
 FPS = 60
 clock = pygame.time.Clock()
+level = Level(level_map, screen)
 
 
 def get_font(size):  # Returns Press-Start-2P in the desired size
-    return pygame.font.Font("presets/font.ttf", size)
+    return pygame.font.Font("presets/main_menu/font.ttf", size)
 
 
 def play():
     while True:
-        screen.fill("white")
-        play_text = get_font(30).render("Тут будет игра. Backspace вернуться назад", True, "black")
-        play_rect = play_text.get_rect(center=(960, 150))
-        screen.blit(play_text, play_rect)
-
         for event in pygame.event.get():
             keys = pygame.key.get_pressed()
             if event.type == pygame.QUIT:
@@ -44,7 +41,11 @@ def play():
                 sys.exit()
             if keys[pygame.K_BACKSPACE]:
                 main_menu()
+
+        screen.fill("black")
+        level.run()
         pygame.display.update()
+        clock.tick(60)
 
 
 def load_game():
