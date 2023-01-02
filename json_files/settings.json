@@ -2,8 +2,13 @@
     "player_charecteristics": {
         "speed": 8,
         "gravity": 0.8,
-        "jump_speed": -16,
+        "jump_speed": -18,
         "sprites": []
+    },
+    "settings_window": {
+        "vertical_tile_number": 17,
+        "tile_size": 64,
+        "screen_width": 1920
     },
     "enemies": {
         "mushroom": {

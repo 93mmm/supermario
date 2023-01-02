@@ -1,11 +1,13 @@
 # imports from external libraries
 import pygame
 import sys
+import json
 
 # imports from files
 from pyfiles.game import Game
 from pyfiles.button import Button
-from pyfiles.level import Level, level_map
+from pyfiles.level import Level
+from pyfiles.game_data import level_0
 
 
 def check_event(event):
@@ -18,14 +20,16 @@ def check_event(event):
             sys.exit()
 
 
+with open("json_files/settings.json", "r") as file:
+    data = json.load(file)
+
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-#game = Game() сделал специально, чтобы пока ошибку не ловил
 running = True
 BG = pygame.image.load("presets/main_menu/BG.png")
 FPS = 60
 clock = pygame.time.Clock()
-level = Level(level_map, screen)
+level = Level(level_0, screen)
 
 
 def get_font(size):  # Returns Press-Start-2P in the desired size
@@ -42,7 +46,7 @@ def play():
             if keys[pygame.K_BACKSPACE]:
                 main_menu()
 
-        screen.fill("black")
+        screen.fill("grey")
         level.run()
         pygame.display.update()
         clock.tick(60)

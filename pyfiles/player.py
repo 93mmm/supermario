@@ -1,5 +1,5 @@
 import pygame
-from pyfiles.support_image import import_folder
+from pyfiles.support_level import import_folder
 import json
 
 
