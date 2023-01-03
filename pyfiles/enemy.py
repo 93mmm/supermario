@@ -1,21 +1,20 @@
 import pygame
-import json
+from random import choice
 
-
-with open("json_files/settings.json", "r") as file:
-    data = json.load(file)
+from pyfiles.game_data import spawnpoints, enemies
 
 
 class Enemy:
-    SPAWNPOINTS = data["spawnpoints"]
-    def __init__(self, level):
+    def __init__(self, level, spawnpoint):
         self.level = level
-        self.spawn()
-        self.type = "ENEMYTYPE"
-        self.speed = "SPEED"
+        self.spawn(spawnpoint)
     
-    def spawn(self): # в зависимости от уровня решает, где заспавнить вражину
-        pass # выбирает рандомную сущность из доступных 
+    def choice_enemy(self):
+        self.name = choice(["mushroom", "tortoise"])
+        self.speed = enemies[self.name]["speed"]
+
+    def spawn(self, spawnpoint):
+        pass
     
     def update(self):
         pass

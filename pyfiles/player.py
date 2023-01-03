@@ -1,10 +1,6 @@
 import pygame
 from pyfiles.support_level import import_folder
-import json
-
-
-with open("json_files/settings.json", "r") as file:
-    data = json.load(file)
+from pyfiles.game_data import player_charecteristics
 
 
 class Player(pygame.sprite.Sprite):
@@ -17,9 +13,9 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
         self.direction = pygame.math.Vector2(0, 0)
-        self.speed = data["player_charecteristics"]["speed"]
-        self.gravity = data["player_charecteristics"]["gravity"]
-        self.jump_speed = data["player_charecteristics"]["jump_speed"]
+        self.speed = player_charecteristics["speed"]
+        self.gravity = player_charecteristics["gravity"]
+        self.jump_speed = player_charecteristics["jump_speed"]
 
         self.status = 'idle'
         self.facing_right = True
@@ -66,16 +62,16 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d]:
             self.direction.x = 1
             self.facing_right = True
-        elif keys[pygame.K_LEFT]:
+        elif keys[pygame.K_a]:
             self.direction.x = -1
             self.facing_right = False
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_UP] and self.on_ground:
+        if keys[pygame.K_SPACE] and self.on_ground:
             self.jump()
 
     def get_status(self):
