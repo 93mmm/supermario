@@ -1,13 +1,9 @@
 from os import walk
 import pygame
 from csv import reader
-import json
 
 
-with open("json_files/settings.json", "r") as file:
-    data = json.load(file)
-
-tile_size = data["settings_window"]["tile_size"]
+tile_size = 64
 
 
 def import_folder(path):

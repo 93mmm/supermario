@@ -3,12 +3,9 @@ from pyfiles.support_level import import_csv_layout, import_cut_graphics
 import json
 from pyfiles.tiles import StaticTile, Tree
 from pyfiles.player import Player
+from pyfiles.game_data import tile_size
 
-with open("json_files/settings.json", "r") as file:
-    data = json.load(file)
-
-tile_size = data["settings_window"]["tile_size"]
-screen_width = data["settings_window"]["screen_width"]
+screen_width = 1080
 
 
 class Level:
