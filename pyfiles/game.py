@@ -8,18 +8,25 @@ from pyfiles.level import Level
 from pyfiles.game_data import level_0
 
 
+def exit_check(event):
+    if event.type == QUIT:
+        pygame.quit()
+        sys.exit()
+    if event.type == KEYDOWN:
+        if event.key == K_ESCAPE:
+            pygame.quit()
+            sys.exit()
 
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Awesome solution")
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        pygame.display.set_caption("Mario")
+        self.screen = pygame.display.set_mode((0, 0), FULLSCREEN)
         self.clock = pygame.time.Clock()
+
         self.background = pygame.image.load("presets/main_menu/BG.png")
-        self.fps = 60
         self.level = Level(level_0, self.screen)
-        self.running = True
-    
+
     def setup_buttons(self):
         font = self.get_font(70)
         self.buttons = []
@@ -37,7 +44,7 @@ class Game:
             if self.buttons[2].checkForInput(menu_mouse_pos):
                 pygame.quit()
                 sys.exit()
-        while self.running:
+        while True:
             self.screen.blit(self.background, (0, 0))
             menu_mouse_pos = pygame.mouse.get_pos()
             menu_text = self.get_font(100).render("ГЛАВНОЕ МЕНЮ", True, "#000000")
@@ -51,14 +58,8 @@ class Game:
                 button.update(self.screen)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                exit_check(event)
+                if event.type == MOUSEBUTTONDOWN:
                     check_buttons()
 
             pygame.display.update()
@@ -72,10 +73,8 @@ class Game:
 
             for event in pygame.event.get():
                 keys = pygame.key.get_pressed()
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if keys[pygame.K_BACKSPACE]:
+                exit_check(event)
+                if keys[K_BACKSPACE]:
                     self.run()
             pygame.display.update()
 
@@ -83,10 +82,8 @@ class Game:
         while True:
             for event in pygame.event.get():
                 keys = pygame.key.get_pressed()
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if keys[pygame.K_BACKSPACE]:
+                exit_check(event)
+                if keys[K_BACKSPACE]:
                     self.run()
 
             self.screen.fill("grey")

@@ -2,7 +2,6 @@ from os import walk
 import pygame
 from csv import reader
 
-
 tile_size = 64
 
 
