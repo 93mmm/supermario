@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 import sys
 
-# imports from files
 from pyfiles.button import Button
 from pyfiles.level import Level
 from pyfiles.game_data import level_0

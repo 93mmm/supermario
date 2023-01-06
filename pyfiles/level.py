@@ -1,6 +1,6 @@
 import pygame
+
 from pyfiles.support_level import import_csv_layout, import_cut_graphics
-import json
 from pyfiles.tiles import StaticTile, Tree
 from pyfiles.player import Player
 from pyfiles.game_data import tile_size
