@@ -27,20 +27,22 @@ class Game:
         self.level = Level(level_0, self.screen)
 
     def setup_buttons(self):
+        exit = [pygame.image.load('assets/buttons/exit_up.png'), pygame.image.load('assets/buttons/exit_down.png')]
+        load = [pygame.image.load('assets/buttons/load_up.png'), pygame.image.load('assets/buttons/load_down.png')]
+        play = [pygame.image.load('assets/buttons/play_up.png'), pygame.image.load('assets/buttons/play_down.png')]
         font = self.get_font(70)
         self.buttons = []
-        names = ["Играть", "Загрузить игру", "Выйти"]
-        for idx, text in enumerate(names):
-            self.buttons.append(Button(image=None, pos=(960, 400 + 200 * idx),
-                            text_input=text, font=font, base_color="#000000", hovering_color="Orange"))
+        images = [play, load, exit]
+        for idx, img in enumerate(images):
+            self.buttons.append(Button(img, (960, 400 + 200 * idx)))
 
     def run(self):
         def check_buttons():
-            if self.buttons[0].checkForInput(menu_mouse_pos):
+            if self.buttons[0].check_for_input(menu_mouse_pos):
                 self.play()
-            if self.buttons[1].checkForInput(menu_mouse_pos):
+            if self.buttons[1].check_for_input(menu_mouse_pos):
                 self.load_game()
-            if self.buttons[2].checkForInput(menu_mouse_pos):
+            if self.buttons[2].check_for_input(menu_mouse_pos):
                 pygame.quit()
                 sys.exit()
         while True:
@@ -53,7 +55,7 @@ class Game:
             self.screen.blit(menu_text, menu_rect)
 
             for button in self.buttons:
-                button.changeColor(menu_mouse_pos)
+                button.change_image(menu_mouse_pos)
                 button.update(self.screen)
 
             for event in pygame.event.get():
