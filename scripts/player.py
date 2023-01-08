@@ -15,6 +15,7 @@ def import_folder(path):
 
     return surface_list
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
@@ -35,10 +36,11 @@ class Player(pygame.sprite.Sprite):
         self.on_ceiling = False
         self.on_left = False
         self.on_right = False
+        self.collision_off = False
 
     def import_character_assets(self):
         character_path = "assets/entities/mario/"
-        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
+        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'death': []}
 
         for animation in self.animations.keys():
             full_path = character_path + animation
@@ -85,7 +87,10 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_SPACE] and self.on_ground:
             self.jump()
-    
+
+        if keys[pygame.K_j]:
+            self.collision_off = True
+
     def get_status(self):
         if self.direction.y < 0:
             self.status = 'jump'
@@ -96,6 +101,7 @@ class Player(pygame.sprite.Sprite):
                 self.status = 'run'
             else:
                 self.status = 'idle'
+
     def apply_gravity(self):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
