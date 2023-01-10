@@ -4,7 +4,6 @@ import sys
 
 from scripts.button import Button
 from scripts.level import Level
-from scripts.game_data import levels
 from scripts.support_function import exit_check, get_font
 
 
@@ -16,7 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.background = "#9290ff"
-        self.level = Level("level_1", self.screen)
+        self.level = Level("level_2", self.screen)
 
     def setup_buttons(self):
         exit = [pygame.image.load('assets/buttons/exit_up.png'), pygame.image.load('assets/buttons/exit_down.png')]

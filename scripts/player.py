@@ -37,6 +37,7 @@ class Player(pygame.sprite.Sprite):
         self.on_left = False
         self.on_right = False
         self.collision_off = False
+        self.topleft = 0
 
     def import_character_assets(self):
         character_path = "assets/entities/mario/"
@@ -75,7 +76,6 @@ class Player(pygame.sprite.Sprite):
 
     def get_input(self):
         keys = pygame.key.get_pressed()
-
         if keys[pygame.K_d]:
             self.direction.x = 1
             self.facing_right = True

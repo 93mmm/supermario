@@ -1,5 +1,7 @@
 levels = {
-    "level_1": "levels/level_1.csv"
+    "level_1": "levels/level_1.csv",
+    "level_2": "levels/level_2.csv"
+
 }
 
 player_charecteristics = {

@@ -19,6 +19,8 @@ class Level:
         self.bricks = pygame.image.load('assets/blocks/bricks.png')
         self.block = pygame.image.load('assets/blocks/block.png')
 
+        self.invicible_block = pygame.image.load('assets/blocks/block.png')
+
         self.bush0 = pygame.image.load('assets/decor/bush0.png')
         self.bush1 = pygame.image.load('assets/decor/bush1.png')
         self.bush2 = pygame.image.load('assets/decor/bush2.png')
@@ -94,6 +96,13 @@ class Level:
                         self.player = pygame.sprite.GroupSingle()
                         sprite = Player((col * tile_size, row * tile_size))
                         self.player.add(sprite)
+
+                    elif self.map_design[row][col] == "-2":
+                        img = pygame.transform.scale(
+                            self.invicible_block, (tile_size, tile_size))
+                        new_surface = pygame.Surface((tile_size, tile_size), flags=pygame.SRCALPHA)
+                        new_surface.blit(img, (0, 0))
+                        self.colliders.add(StaticTile(tile_size, col * tile_size, row * tile_size, img))
     
     def horizontal_movement_collision(self):
         player = self.player.sprite
