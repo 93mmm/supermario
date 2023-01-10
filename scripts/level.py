@@ -127,21 +127,22 @@ class Level:
         player.apply_gravity()
         collidable_sprites = self.colliders.sprites()
 
-        for sprite in collidable_sprites:
-            if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
-                    player.direction.y = 0
-                    player.on_ground = True
-                elif player.direction.y < 0:
-                    player.rect.top = sprite.rect.bottom
-                    player.direction.y = 0
-                    player.on_ceiling = True
+        if not player.collision_off:
+            for sprite in collidable_sprites:
+                if sprite.rect.colliderect(player.rect):
+                    if player.direction.y > 0:
+                        player.rect.bottom = sprite.rect.top
+                        player.direction.y = 0
+                        player.on_ground = True
+                    elif player.direction.y < 0:
+                        player.rect.top = sprite.rect.bottom
+                        player.direction.y = 0
+                        player.on_ceiling = True
 
-        if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
-            player.on_ground = False
-        if player.on_ceiling and player.direction.y > 0.1:
-            player.on_ceiling = False
+            if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
+                player.on_ground = False
+            if player.on_ceiling and player.direction.y > 0.1:
+                player.on_ceiling = False
     
     def scroll_x(self):
         player = self.player.sprite
