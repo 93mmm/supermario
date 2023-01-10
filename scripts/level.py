@@ -19,7 +19,7 @@ class Level:
         self.bricks = pygame.image.load('assets/blocks/bricks.png')
         self.block = pygame.image.load('assets/blocks/block.png')
 
-        self.invicible_block = pygame.image.load('assets/blocks/block.png')
+        self.invicible_block = pygame.image.load('assets/blocks/invicible_collider.png')
 
         self.bush0 = pygame.image.load('assets/decor/bush0.png')
         self.bush1 = pygame.image.load('assets/decor/bush1.png')

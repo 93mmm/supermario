@@ -2,18 +2,7 @@ import pygame
 from os import walk
 
 from scripts.game_data import player_charecteristics
-
-
-def import_folder(path):
-    surface_list = []
-
-    for _, __, image_files in walk(path):
-        for image in image_files:
-            full_path = path + "/" + image
-            image_surface = pygame.image.load(full_path).convert_alpha()
-            surface_list.append(image_surface)
-
-    return surface_list
+from scripts.support_function import import_folder
 
 
 class Player(pygame.sprite.Sprite):
@@ -89,6 +78,7 @@ class Player(pygame.sprite.Sprite):
             self.jump()
 
         if keys[pygame.K_j]:
+            self.jump()
             self.collision_off = True
 
     def get_status(self):
