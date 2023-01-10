@@ -1,19 +1,9 @@
-from csv import reader
 import pygame
 
-#from pyfiles.support_level import import_csv_layout, import_cut_graphics
 from scripts.tiles import StaticTile
 from scripts.player import Player
 from scripts.game_data import tile_size, screen_width, levels
-
-
-def import_csv_layout(path):
-    design = []
-    with open(path, "r") as file:
-        level = reader(file, delimiter=",")
-        for row in level:
-                design.append(list(row))
-    return design
+from scripts.support_function import get_font, import_csv_layout
 
 
 class Level:
@@ -36,6 +26,10 @@ class Level:
         self.flower = pygame.image.load('assets/decor/flower.png')
 
         self.create_tile_group()
+
+        self.score = 1
+        self.level_number = level
+        self.time = 0
     
     def create_tile_group(self):
         self.colliders = pygame.sprite.Group()
@@ -159,11 +153,43 @@ class Level:
             self.world_shift = 0
             player.speed = 8
     
+    def draw_score(self):
+        color = "#ffffff"
+
+        time = get_font(40).render("TIME", True, color)
+        time_rect = time.get_rect(center=(100, 30))
+        self.surface.blit(time, time_rect)
+
+        time = get_font(40).render(f"{self.time}", True, color)
+        time_rect = time.get_rect(center=(100, 71))
+        self.surface.blit(time, time_rect)
+
+        world = get_font(40).render("WORLD", True, color)
+        level_rect = world.get_rect(center=(960, 30))
+        self.surface.blit(world, level_rect)
+
+        level = self.level_number.split("_")[-1]
+        level = get_font(40).render(f"{level}", True, color)
+        level_rect = level.get_rect(center=(960, 71))
+        self.surface.blit(level, level_rect)
+        
+        score = get_font(40).render("MARIO", True, color)
+        score_rect = score.get_rect(center=(1800, 30))
+        self.surface.blit(score, score_rect)
+
+        score_text = get_font(40).render(f"{self.score:06}", True, color)
+        score_text_rect = score_text.get_rect(center=(1800, 71))
+        self.surface.blit(score_text, score_text_rect)
+
     def run(self):
+        # коллайдеры
         self.colliders.draw(self.surface)
         self.colliders.update(self.world_shift)
         self.not_colliders.draw(self.surface)
         self.not_colliders.update(self.world_shift)
+
+        # счётчики
+        self.draw_score()
 
         # игрок
         self.player.update()

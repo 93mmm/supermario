@@ -5,16 +5,7 @@ import sys
 from scripts.button import Button
 from scripts.level import Level
 from scripts.game_data import levels
-
-
-def exit_check(event):
-    if event.type == QUIT:
-        pygame.quit()
-        sys.exit()
-    if event.type == KEYDOWN:
-        if event.key == K_ESCAPE:
-            pygame.quit()
-            sys.exit()
+from scripts.support_function import exit_check, get_font
 
 
 class Game:
@@ -48,7 +39,7 @@ class Game:
         while True:
             self.screen.fill(self.background)
             menu_mouse_pos = pygame.mouse.get_pos()
-            menu_text = self.get_font(100).render("ГЛАВНОЕ МЕНЮ", True, "#000000")
+            menu_text = get_font(100).render("MAIN MENU", True, "#000000")
             menu_rect = menu_text.get_rect(center=(960, 200))
             self.setup_buttons()
 
@@ -68,7 +59,7 @@ class Game:
     def load_game(self):
         while True:
             self.screen.fill("grey")
-            play_text = self.get_font(30).render("Загрузка игры... Backspace вернуться назад", True, "black")
+            play_text = get_font(30).render("Загрузка игры... Backspace вернуться назад", True, "black")
             play_rect = play_text.get_rect(center=(960, 150))
             self.screen.blit(play_text, play_rect)
 
@@ -92,6 +83,3 @@ class Game:
             self.level.run()
             self.clock.tick(60)
             pygame.display.update()
-
-    def get_font(self, size): # Returns Press-Start-2P in the desired size
-        return pygame.font.Font("assets/fonts/font.ttf", size)
