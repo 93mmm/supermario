@@ -77,10 +77,6 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE] and self.on_ground:
             self.jump()
 
-        if keys[pygame.K_j]:
-            self.jump()
-            self.collision_off = True
-
     def get_status(self):
         if self.direction.y < 0 and not self.collision_off:
             self.status = 'jump'
@@ -100,6 +96,9 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         self.direction.y = self.jump_speed
+
+    def kill_player(self):
+        self.collision_off = True
 
     def update(self):
         self.get_input()

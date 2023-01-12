@@ -37,8 +37,7 @@ class AnimatedTile(Tile):
         self.rect.x += shift
 
 
-class Tree(AnimatedTile):
-    def __init__(self, size, x, y, path, offset):
-        super().__init__(size, x, y, path)
-        offset_y = y - offset
-        self.rect.topleft = (x, offset_y)
+class EnemyTile(Tile):
+    def __init__(self, size, x, y, surface):
+        super().__init__(size, x, y)
+        self.image = surface

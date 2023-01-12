@@ -1,9 +1,10 @@
 import pygame
-
-from scripts.tiles import StaticTile
+import sys
+from scripts.tiles import StaticTile, EnemyTile
 from scripts.player import Player
 from scripts.game_data import tile_size, screen_width, levels
 from scripts.support_function import get_font, import_csv_layout
+from scripts.enemy import Enemy
 
 
 class Level:
@@ -26,6 +27,7 @@ class Level:
         self.bush2 = pygame.image.load('assets/decor/bush2.png')
         self.bush3 = pygame.image.load('assets/decor/bush3.png')
         self.flower = pygame.image.load('assets/decor/flower.png')
+        self.mushroom = pygame.image.load('assets/entities/mushroom/walk_0.png')
 
         self.create_tile_group()
 
@@ -36,6 +38,7 @@ class Level:
     def create_tile_group(self):
         self.colliders = pygame.sprite.Group()
         self.not_colliders = pygame.sprite.Group()
+        self.enemies_colliders = pygame.sprite.Group()
         for row in range(len(self.map_design)):
             for col in range(len(self.map_design[0])):
                 if self.map_design[row][col] != "0":
@@ -103,6 +106,13 @@ class Level:
                         new_surface = pygame.Surface((tile_size, tile_size), flags=pygame.SRCALPHA)
                         new_surface.blit(img, (0, 0))
                         self.colliders.add(StaticTile(tile_size, col * tile_size, row * tile_size, img))
+
+                    elif self.map_design[row][col] == "-3":
+                        mushroom = pygame.transform.scale(
+                            self.mushroom, (tile_size, tile_size))
+                        new_surface = pygame.Surface((tile_size, tile_size), flags=pygame.SRCALPHA)
+                        new_surface.blit(mushroom, (0, 0))
+                        self.enemies_colliders.add(EnemyTile(tile_size, col * tile_size, row * tile_size, mushroom))
     
     def horizontal_movement_collision(self):
         player = self.player.sprite
@@ -129,6 +139,7 @@ class Level:
         player = self.player.sprite
         player.apply_gravity()
         collidable_sprites = self.colliders.sprites()
+        enemies_sprites = self.enemies_colliders.sprites()
 
         if not player.collision_off:
             for sprite in collidable_sprites:
@@ -146,6 +157,17 @@ class Level:
                 player.on_ground = False
             if player.on_ceiling and player.direction.y > 0.1:
                 player.on_ceiling = False
+
+    def enemies_collision(self):
+        player = self.player.sprite
+        enemies_sprites = self.enemies_colliders.sprites()
+        for sprite in enemies_sprites:
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.kill_player()
+                elif player.direction.y < 0:
+                    player.kill_player()
+
     
     def scroll_x(self):
         player = self.player.sprite
@@ -204,5 +226,10 @@ class Level:
         self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
+        self.enemies_collision()
         self.scroll_x()
         self.player.draw(self.surface)
+
+        #противники
+        self.enemies_colliders.draw(self.surface)
+        self.enemies_colliders.update(self.world_shift)
