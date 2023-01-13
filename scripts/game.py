@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
+import webbrowser
 
 from scripts.button import Button
 from scripts.level import Level
@@ -19,10 +20,10 @@ class Game:
 
     def setup_buttons(self):
         exit = [pygame.image.load('assets/buttons/exit_up.png'), pygame.image.load('assets/buttons/exit_down.png')]
-        load = [pygame.image.load('assets/buttons/load_up.png'), pygame.image.load('assets/buttons/load_down.png')]
         play = [pygame.image.load('assets/buttons/play_up.png'), pygame.image.load('assets/buttons/play_down.png')]
+        credits_of_creators = [pygame.image.load('assets/buttons/load_up.png'), pygame.image.load('assets/buttons/load_down.png')]
         self.buttons = []
-        images = [play, load, exit]
+        images = [play, exit, credits_of_creators]
         for idx, img in enumerate(images):
             self.buttons.append(Button(img, (960, 400 + 200 * idx)))
 
@@ -30,9 +31,12 @@ class Game:
         def check_buttons():
             if self.buttons[0].check_for_input(menu_mouse_pos):
                 self.play()
-            if self.buttons[1].check_for_input(menu_mouse_pos):
-                self.load_game()
             if self.buttons[2].check_for_input(menu_mouse_pos):
+                url = "https://www.tinkoff.ru/sl/8UiebMfZ6fc"
+                webbrowser.open(url, new=0, autoraise=True)
+                sys.exit()
+                #self.load_game()
+            if self.buttons[1].check_for_input(menu_mouse_pos):
                 pygame.quit()
                 sys.exit()
         while True:
@@ -76,9 +80,27 @@ class Game:
                 keys = pygame.key.get_pressed()
                 exit_check(event)
                 if keys[K_BACKSPACE]:
+                    self.reset_game_after_death()
                     self.run()
 
             self.screen.fill(self.background)
             self.level.run()
+            if self.level.player_is_dead:
+                self.dead_scene()
             self.clock.tick(60)
             pygame.display.update()
+
+    def dead_scene(self):
+        while True:
+            for event in pygame.event.get():
+                keys = pygame.key.get_pressed()
+                if keys[K_BACKSPACE]:
+                    self.run()
+            self.screen.fill("black")
+            self.clock.tick(60)
+            pygame.display.update()
+
+    # donate me to fix this sh*t:
+    def reset_game_after_death(self):
+        game = Game()
+        game.run()

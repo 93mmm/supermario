@@ -12,6 +12,7 @@ class Level:
         # главные настройки
         self.surface = surface
         self.world_shift = 0
+        self.player_is_dead = False
 
         # настройки карты
         self.map_design = import_csv_layout(levels[level])
@@ -27,7 +28,6 @@ class Level:
         self.bush2 = pygame.image.load('assets/decor/bush2.png')
         self.bush3 = pygame.image.load('assets/decor/bush3.png')
         self.flower = pygame.image.load('assets/decor/flower.png')
-        self.mushroom = pygame.image.load('assets/entities/mushroom/walk_0.png')
 
         self.create_tile_group()
 
@@ -38,7 +38,7 @@ class Level:
     def create_tile_group(self):
         self.colliders = pygame.sprite.Group()
         self.not_colliders = pygame.sprite.Group()
-        self.enemies_colliders = pygame.sprite.Group()
+        self.enemies_colliders = []
         for row in range(len(self.map_design)):
             for col in range(len(self.map_design[0])):
                 if self.map_design[row][col] != "0":
@@ -108,27 +108,28 @@ class Level:
                         self.colliders.add(StaticTile(tile_size, col * tile_size, row * tile_size, img))
 
                     elif self.map_design[row][col] == "-3":
-                        mushroom = pygame.transform.scale(
-                            self.mushroom, (tile_size, tile_size))
-                        new_surface = pygame.Surface((tile_size, tile_size), flags=pygame.SRCALPHA)
-                        new_surface.blit(mushroom, (0, 0))
-                        self.enemies_colliders.add(EnemyTile(tile_size, col * tile_size, row * tile_size, mushroom))
+                        enemy = pygame.sprite.GroupSingle()
+                        sprite = EnemyTile((col * tile_size, row * tile_size))
+                        enemy.add(sprite)
+
+                        self.enemies_colliders.append(enemy)
     
     def horizontal_movement_collision(self):
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
 
         collidable_sprites = self.colliders.sprites()
-        for sprite in collidable_sprites:
-            if sprite.rect.colliderect(player.rect):
-                if player.direction.x < 0:
-                    player.rect.left = sprite.rect.right
-                    player.on_left = True
-                    self.current_x = player.rect.left
-                elif player.direction.x > 0:
-                    player.rect.right = sprite.rect.left
-                    player.on_right = True
-                    self.current_x = player.rect.right
+        if not player.collision_off:
+            for sprite in collidable_sprites:
+                if sprite.rect.colliderect(player.rect):
+                    if player.direction.x < 0:
+                        player.rect.left = sprite.rect.right
+                        player.on_left = True
+                        self.current_x = player.rect.left
+                    elif player.direction.x > 0:
+                        player.rect.right = sprite.rect.left
+                        player.on_right = True
+                        self.current_x = player.rect.right
 
         if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):
             player.on_left = False
@@ -139,7 +140,6 @@ class Level:
         player = self.player.sprite
         player.apply_gravity()
         collidable_sprites = self.colliders.sprites()
-        enemies_sprites = self.enemies_colliders.sprites()
 
         if not player.collision_off:
             for sprite in collidable_sprites:
@@ -160,13 +160,16 @@ class Level:
 
     def enemies_collision(self):
         player = self.player.sprite
-        enemies_sprites = self.enemies_colliders.sprites()
-        for sprite in enemies_sprites:
-            if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0:
-                    player.kill_player()
-                elif player.direction.y < 0:
-                    player.kill_player()
+        for sprite in self.enemies_colliders:
+            sprite = sprite.sprites()
+            if not player.collision_off:
+                for i in sprite:
+                    if i.rect.colliderect(player.rect):
+                        if player.direction.y > 0:
+                            player.kill_player()
+                        elif player.direction.y < 0:
+                            player.kill_player()
+                            self.player_is_dead = True
 
     
     def scroll_x(self):
@@ -229,7 +232,7 @@ class Level:
         self.enemies_collision()
         self.scroll_x()
         self.player.draw(self.surface)
-
-        #противники
-        self.enemies_colliders.draw(self.surface)
-        self.enemies_colliders.update(self.world_shift)
+        # противникив
+        for entity in self.enemies_colliders:
+            entity.draw(self.surface)
+            entity.sprite.rect.x += self.world_shift

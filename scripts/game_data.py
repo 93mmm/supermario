@@ -8,6 +8,7 @@ player_charecteristics = {
     "speed": 8,
     "gravity": 0.8,
     "jump_speed": -18,
+    "death_jump_speed": -20,
     "sprites": []
 }
 

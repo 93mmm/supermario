@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = player_charecteristics["speed"]
         self.gravity = player_charecteristics["gravity"]
         self.jump_speed = player_charecteristics["jump_speed"]
+        self.death_speed = player_charecteristics["death_jump_speed"]
 
         self.status = 'idle'
         self.facing_right = True
@@ -97,8 +98,13 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         self.direction.y = self.jump_speed
 
+    def kill_jump(self):
+        self.collision_off = True
+        self.direction.y = self.death_speed
+
     def kill_player(self):
         self.collision_off = True
+        self.kill_jump()
 
     def update(self):
         self.get_input()
