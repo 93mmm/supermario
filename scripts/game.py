@@ -104,3 +104,4 @@ class Game:
     def reset_game_after_death(self):
         game = Game()
         game.run()
+
