@@ -1,6 +1,8 @@
+import random
 from os import walk
 import pygame
 from scripts.support_function import import_folder
+from random import choice
 
 
 class Tile(pygame.sprite.Sprite):
@@ -37,8 +39,34 @@ class AnimatedTile(Tile):
         self.rect.x += shift
 
 
-class Tree(AnimatedTile):
-    def __init__(self, size, x, y, path, offset):
-        super().__init__(size, x, y, path)
-        offset_y = y - offset
-        self.rect.topleft = (x, offset_y)
+class EnemyTile(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.import_character_assets()
+        self.frame_index = 0
+        self.image = self.animations["run"][self.frame_index]
+        self.animation_speed = 0.15
+        self.direction = pygame.math.Vector2(0, 0)
+        self.direction.x = random.choice([-1, 1])
+        self.status = 'run'
+        self.rect = self.image.get_rect(topleft=pos)
+
+    def import_character_assets(self):
+        entitie = random.choice(["dark_tortoise", "mushroom", "tortoise"])
+        character_path = f"assets/entities/{entitie}/"
+        self.animations = {"run": [], "death": []}
+
+        for animation in self.animations.keys():
+            full_path = character_path + animation
+            self.animations[animation] = import_folder(full_path)
+
+    def animate(self):
+        animation = self.animations[self.status]
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        self.image = animation[int(self.frame_index)]
+
+    def update(self):
+        self.animate()
