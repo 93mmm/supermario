@@ -158,7 +158,7 @@ class Level:
             if player.on_ceiling and player.direction.y > 0.1:
                 player.on_ceiling = False
 
-    def enemies_collision(self):
+    def enemies_collision_person(self):
         player = self.player.sprite
         for sprite in self.enemies_colliders:
             sprite = sprite.sprites()
@@ -171,7 +171,14 @@ class Level:
                             player.kill_player()
                             self.player_is_dead = True
 
-    
+    def enemies_collision_blocks(self):
+        collidable_sprites = self.colliders
+        for enemy in self.enemies_colliders:
+            enemy = enemy.sprites()
+            for entity in enemy:
+                if pygame.sprite.spritecollide(entity, collidable_sprites, False):
+                    entity.reverse()
+
     def scroll_x(self):
         player = self.player.sprite
         player_x = player.rect.centerx
@@ -229,10 +236,13 @@ class Level:
         self.player.update()
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
-        self.enemies_collision()
         self.scroll_x()
         self.player.draw(self.surface)
-        # противникив
+        self.enemies_collision_person()
+
+        # противники
+        self.enemies_collision_blocks()
         for entity in self.enemies_colliders:
             entity.draw(self.surface)
+            entity.update()
             entity.sprite.rect.x += self.world_shift

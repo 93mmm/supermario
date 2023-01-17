@@ -45,11 +45,16 @@ class EnemyTile(pygame.sprite.Sprite):
         self.import_character_assets()
         self.frame_index = 0
         self.image = self.animations["run"][self.frame_index]
-        self.animation_speed = 0.15
+        self.speed = random.randint(1, 2)
+        self.animation_speed = 0.05
         self.direction = pygame.math.Vector2(0, 0)
-        self.direction.x = random.choice([-1, 1])
         self.status = 'run'
         self.rect = self.image.get_rect(topleft=pos)
+        self.facing_right = True
+        self.on_ground = False
+        self.on_ceiling = False
+        self.on_left = False
+        self.on_right = False
 
     def import_character_assets(self):
         entitie = random.choice(["dark_tortoise", "mushroom", "tortoise"])
@@ -68,5 +73,17 @@ class EnemyTile(pygame.sprite.Sprite):
 
         self.image = animation[int(self.frame_index)]
 
+    def move(self):
+        self.rect.x += self.speed
+
+    def reverse(self):
+        self.speed *= -1
+
+    def reversed_image(self):
+        if self.speed > 0:
+            self.image = pygame.transform.flip(self.image, True, False)
+
     def update(self):
         self.animate()
+        self.move()
+        self.reversed_image()
