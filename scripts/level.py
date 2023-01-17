@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 from scripts.tiles import StaticTile, EnemyTile
 from scripts.player import Player
 from scripts.game_data import tile_size, screen_width, levels
@@ -31,8 +32,9 @@ class Level:
 
         self.create_tile_group()
 
-        self.score = 1
+        self.score = 0
         self.level_number = level
+        self.start = time.time()
         self.time = 0
     
     def create_tile_group(self):
@@ -178,6 +180,7 @@ class Level:
                     enemy_top = entity.rect.top
                     player_bottom = self.player.sprite.rect.bottom
                     if enemy_top < player_bottom < enemy_center and player.direction.y >= 0:
+                        self.score += 100
                         self.player.sprite.direction.y = -15
                         entity.rect.x = -1000
 
@@ -207,13 +210,13 @@ class Level:
     def draw_score(self):
         color = "#ffffff"
 
-        time = get_font(40).render("TIME", True, color)
-        time_rect = time.get_rect(center=(100, 30))
-        self.surface.blit(time, time_rect)
-
-        time = get_font(40).render(f"{self.time}", True, color)
-        time_rect = time.get_rect(center=(100, 71))
-        self.surface.blit(time, time_rect)
+        display_time = get_font(40).render("TIME", True, color)
+        time_rect = display_time.get_rect(center=(100, 30))
+        self.surface.blit(display_time, time_rect)
+        self.time = int(time.time() - self.start)
+        display_time = get_font(40).render(f"{self.time}", True, color)
+        time_rect = display_time.get_rect(center=(100, 71))
+        self.surface.blit(display_time, time_rect)
 
         world = get_font(40).render("WORLD", True, color)
         level_rect = world.get_rect(center=(960, 30))
