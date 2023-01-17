@@ -165,11 +165,21 @@ class Level:
             if not player.collision_off:
                 for i in sprite:
                     if i.rect.colliderect(player.rect):
-                        if player.direction.y > 0:
+                        if player.direction.x > 0 or player.direction.x < 0:
                             player.kill_player()
-                        elif player.direction.y < 0:
-                            player.kill_player()
-                            self.player_is_dead = True
+
+    def enemy_die(self):
+        player = self.player.sprite
+        for enemy in self.enemies_colliders:
+            enemy = enemy.sprites()
+            for entity in enemy:
+                if entity.rect.colliderect(player.rect):
+                    enemy_center = entity.rect.centery
+                    enemy_top = entity.rect.top
+                    player_bottom = self.player.sprite.rect.bottom
+                    if enemy_top < player_bottom < enemy_center and player.direction.y >= 0:
+                        self.player.sprite.direction.y = -15
+                        entity.rect.x = -1000
 
     def enemies_collision_blocks(self):
         collidable_sprites = self.colliders
@@ -223,6 +233,7 @@ class Level:
         self.surface.blit(score_text, score_text_rect)
 
     def run(self):
+        player = self.player.sprite
         # коллайдеры
         self.colliders.draw(self.surface)
         self.colliders.update(self.world_shift)
@@ -239,6 +250,9 @@ class Level:
         self.scroll_x()
         self.player.draw(self.surface)
         self.enemies_collision_person()
+
+        if not player.collision_off:
+            self.enemy_die()
 
         # противники
         self.enemies_collision_blocks()

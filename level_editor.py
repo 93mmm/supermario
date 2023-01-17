@@ -80,49 +80,51 @@ def draw_grid():
 def draw_world():
 	for row in range(heigth):
 		for col in range(width):
-			if world_data[row][col] == 1:
-				img = pygame.transform.scale(stones, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+			if world_data[row][col] > 0:
+				if world_data[row][col] == 1:
+					img = pygame.transform.scale(stones, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == 2:
-				img = pygame.transform.scale(bricks, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 2:
+					img = pygame.transform.scale(bricks, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == 3:
-				img = pygame.transform.scale(block, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 3:
+					img = pygame.transform.scale(block, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == 4:
-				img = pygame.transform.scale(bush0, (tile_size * 4, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
-				
-			if world_data[row][col] == 5:
-				img = pygame.transform.scale(bush1, (tile_size * 2, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 4:
+					img = pygame.transform.scale(bush0, (tile_size * 4, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == 6:
-				img = pygame.transform.scale(bush2, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 5:
+					img = pygame.transform.scale(bush1, (tile_size * 2, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == 7:
-				img = pygame.transform.scale(bush3, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 6:
+					img = pygame.transform.scale(bush2, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == 8:
-				img = pygame.transform.scale(flower, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 7:
+					img = pygame.transform.scale(bush3, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == -1:
-				img = pygame.transform.scale(mario, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 8:
+					#exit
+					img = pygame.transform.scale(flower, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == -2:
-				img = pygame.transform.scale(invicible_block, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == -1:
+					img = pygame.transform.scale(mario, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
-			if world_data[row][col] == -3:
-				img = pygame.transform.scale(enemy, (tile_size, tile_size))
-				screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == -2:
+					img = pygame.transform.scale(invicible_block, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
+					
+				if world_data[row][col] == -3:
+					img = pygame.transform.scale(enemy, (tile_size, tile_size))
+					screen.blit(img, (col * tile_size, row * tile_size))
 				
 
 

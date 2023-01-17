@@ -19,6 +19,7 @@ class Game:
         self.level = Level("level_1", self.screen)
 
     def setup_buttons(self):
+        # test
         exit = [pygame.image.load('assets/buttons/exit_up.png'), pygame.image.load('assets/buttons/exit_down.png')]
         play = [pygame.image.load('assets/buttons/play_up.png'), pygame.image.load('assets/buttons/play_down.png')]
         credits_of_creators = [pygame.image.load('assets/buttons/load_up.png'), pygame.image.load('assets/buttons/load_down.png')]
