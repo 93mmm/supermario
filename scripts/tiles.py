@@ -16,9 +16,9 @@ class Tile(pygame.sprite.Sprite):
 
 
 class StaticTile(Tile):
-    def __init__(self, size, x, y, surface):
+    def __init__(self, size, x, y, image):
         super().__init__(size, x, y)
-        self.image = surface
+        self.image = image
 
 
 class AnimatedTile(Tile):
@@ -87,3 +87,9 @@ class EnemyTile(pygame.sprite.Sprite):
         self.animate()
         self.move()
         self.reversed_image()
+
+class Cup(StaticTile):
+    def __init__(self, size, x, y, image):
+        super().__init__(size, x, y)
+        self.image = image
+        

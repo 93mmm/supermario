@@ -59,23 +59,26 @@ class Game:
                     check_buttons()
             self.clock.tick(60)
             pygame.display.update()
-    
-    def load_game(self):
-        while True:
-            self.screen.fill("grey")
-            play_text = get_font(30).render("Загрузка игры... Backspace вернуться назад", True, "black")
-            play_rect = play_text.get_rect(center=(960, 150))
-            self.screen.blit(play_text, play_rect)
 
+    def play(self):
+        while True:
+            print(1)
             for event in pygame.event.get():
                 keys = pygame.key.get_pressed()
                 exit_check(event)
                 if keys[K_BACKSPACE]:
+                    self.reset_game_after_death()
                     self.run()
+
+            self.screen.fill(self.background)
+            self.level.run()
+            if self.level.level_number == "level_2":
+                break
+            if self.level.player_is_dead:
+                self.dead_scene()
             self.clock.tick(60)
             pygame.display.update()
-
-    def play(self):
+        self.level = Level(self.level.level_number, self.screen)
         while True:
             for event in pygame.event.get():
                 keys = pygame.key.get_pressed()
@@ -86,6 +89,8 @@ class Game:
 
             self.screen.fill(self.background)
             self.level.run()
+            if self.level.level_number == "level_3":
+                break
             if self.level.player_is_dead:
                 self.dead_scene()
             self.clock.tick(60)

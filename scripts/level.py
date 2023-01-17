@@ -1,11 +1,10 @@
 import pygame
 import sys
 import time
-from scripts.tiles import StaticTile, EnemyTile
+from scripts.tiles import StaticTile, EnemyTile, Cup
 from scripts.player import Player
 from scripts.game_data import tile_size, screen_width, levels
 from scripts.support_function import get_font, import_csv_layout
-from scripts.enemy import Enemy
 
 
 class Level:
@@ -29,6 +28,7 @@ class Level:
         self.bush2 = pygame.image.load('assets/decor/bush2.png')
         self.bush3 = pygame.image.load('assets/decor/bush3.png')
         self.flower = pygame.image.load('assets/decor/flower.png')
+        self.cup = pygame.image.load("assets/cup/cup.png")
 
         self.create_tile_group()
 
@@ -36,8 +36,10 @@ class Level:
         self.level_number = level
         self.start = time.time()
         self.time = 0
+        self.won = False
     
     def create_tile_group(self):
+        self.cups = pygame.sprite.Group()
         self.colliders = pygame.sprite.Group()
         self.not_colliders = pygame.sprite.Group()
         self.enemies_colliders = []
@@ -113,9 +115,14 @@ class Level:
                         enemy = pygame.sprite.GroupSingle()
                         sprite = EnemyTile((col * tile_size, row * tile_size))
                         enemy.add(sprite)
-
                         self.enemies_colliders.append(enemy)
-    
+                    elif self.map_design[row][col] == "-4":
+                        img = pygame.transform.scale(
+                            self.cup, (tile_size, tile_size))
+                        new_surface = pygame.Surface((tile_size, tile_size), flags=pygame.SRCALPHA)
+                        new_surface.blit(img, (0, 0))
+                        self.cups.add(StaticTile(tile_size, col * tile_size, row * tile_size, img))
+
     def horizontal_movement_collision(self):
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
@@ -132,6 +139,9 @@ class Level:
                         player.rect.right = sprite.rect.left
                         player.on_right = True
                         self.current_x = player.rect.right
+        for sprite in self.cups.sprites():
+            if sprite.rect.colliderect(player.rect):
+                self.won = True
 
         if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):
             player.on_left = False
@@ -242,6 +252,8 @@ class Level:
         self.colliders.update(self.world_shift)
         self.not_colliders.draw(self.surface)
         self.not_colliders.update(self.world_shift)
+        self.cups.draw(self.surface)
+        self.cups.update(self.world_shift)
 
         # счётчики
         self.draw_score()
@@ -263,3 +275,7 @@ class Level:
             entity.draw(self.surface)
             entity.update()
             entity.sprite.rect.x += self.world_shift
+            
+        if self.won:
+            self.level_number = self.level_number[:-1] + str(int(self.level_number[-1]) + 1)
+            return self.level_number
